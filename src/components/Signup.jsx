@@ -1,141 +1,212 @@
-// SignUp.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+ 
+const SignUp = () => {
+    const navigate = useNavigate();
+    const [step, setStep] = useState(0);
+    const [formData, setFormData] = useState([
+        {
+            name: "",
+            email: "",
+            age: 0,
+            professional: "",
+            username: "",
+            password: ""
+        }
+    ])
+ 
+    const handleChange = (e) => {
+ 
+        setFormData({
+            ...formData,
+            [e.taget.name]: e.taget.value
+        })
+    }
+ 
+    const handleNextPage = () => {
+        if (step < 2) {
+            setStep(step + 1)
+        }
+    }
+ 
+    const handleSubmit = (e) => {
+        e.preventDeafult();
+        console.log("Data added Successfully!!!", formData);
+ 
+    }
+ 
+    const handleSignUp = () => {
+        console.log('Signing up...');
+        navigate('/login');
+ 
+    };
+ 
 
-function SignUp() {
-  const navigate = useNavigate();
 
-  const handleSignUp = () => {
-    console.log('Signing up...');
-    navigate('/login');
 
-  };
-  function toggleDropdown() {
-    const dropdown = document.getElementById('professionDropdown');
-    dropdown.classList.toggle('hidden');
-  }
 
-  function selectProfession(profession) {
-    document.getElementById('professionInput').value = profession;
-    toggleDropdown();
-  }
 
-  return (
-    <div className="flex items-center justify-center bg-white min-h-screen">
-      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-green-700 mb-8 text-center">Create Account</h2>
-        <form>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Name
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="name"
-              type="text"
-              placeholder="Enter your name"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="number">
-              Number
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="number"
-              type="tel"
-              placeholder="Enter your number"
-            />
-          </div>
+return(
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="number">
-              Age
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="number"
-              type="tel"
-              placeholder="Enter your age"
-            />
-          </div>
+<div className="min-h-screen bg-gray-900 flex items-center justify-center">
+ 
+  <div className="bg-gray-800 rounded-xl shadow-2xl p-2 w-full max-w-4xl min-h-[70vh] flex">'
+  
 
-          <div className="mb-4 relative">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="text">
-              Profession
-            </label>
-            <div className="relative">
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-
-        type="text"
-        placeholder="Select your profession"
-        readonly
-        onclick="toggleDropdown()"
-        id="professionInput"/>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-        <svg classNmae="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707 0.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-        </div>
-      </div>
-      <div id="professionDropdown" className="absolute mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
-      <div class="py-1" role="none">
-        <button onclick={selectProfession} class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Software Engineer</button>
-        <button onclick="selectProfession('Doctor')" className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Doctor</button>
-        <button onclick="selectProfession('Teacher')" className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Teacher</button>
-        <button onclick="selectProfession('Lawyer')" className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Lawyer</button>
-        <button onclick="selectProfession('Artist')" className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Artist</button>
-        </div>
+    <div className="w-1/2 hidden md:block">
+      <img src="src\assets\gomez.webp" alt="login illustration" className="w-full h-full object-cover rounded-xl" />
     </div>
-          </div>
-          
 
-        
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Username
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-            />
+    {/* Right Side: Form Section */}
+    <div className="w-1/2 p-12">
+      <h2 className="text-3xl font-bold text-white mb-8 text-center">Create Account</h2>
+      <form>
+        {/* Step 1: Personal Information */}
+        {step === 0 && (
+          <div>
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="name">
+                Name
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                name="name"
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="email">
+                Email
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                value={formData.email}
+                onChange={handleChange}
+                name="email"
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="age">
+                Age
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                id="age"
+                value={formData.age}
+                onChange={handleChange}
+                name="age"
+                type="number"
+                placeholder="Enter your age"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="profession">
+                Profession
+              </label>
+              <select
+                className="appearance-none border rounded w-full mb-3 py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                value={formData.professional}
+                onChange={handleChange}
+                name="professional"
+              >
+                <option value="Software Engineer" className='bg-gray-700 text-white'>Choose your profession</option>
+                <option value="Software Engineer" className='bg-gray-700 text-white'>Software Engineer</option>
+                <option value="IT"  className='bg-gray-700 text-white' >IT</option>
+                <option value="Business"  className='bg-gray-700 text-white'>Business</option>
+                <option value="Artist"  className='bg-gray-700 text-white'>Artist</option>
+              </select>
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-            />
+        )}
+
+        {/* Step 2: Account Information */}
+        {step === 1 && (
+          <div>
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="username">
+                Username
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                id="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+                name="username"
+                placeholder="Enter your username"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="password">
+                Password
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                value={formData.password}
+                onChange={handleChange}
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-white text-lg font-stretch-expanded mb-2" htmlFor="confirmPassword">
+                Confirm Password
+              </label>
+              <input
+                className="appearance-none border rounded w-full mb-3 py-4 px-4 text-white focus:ring-2 focus:ring-gray-500 transition duration-300"
+                id="confirmPassword"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                name="confirmPassword"
+                placeholder="Confirm your password"
+              />
+            </div>
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
-              Confirm Password
-            </label>
-            <input
-              className="appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="confirmPassword"
-              type="password"
-              placeholder="Confirm your password"
-            />
-          </div>
+        )}
+
+        {/* Buttons to move between steps */}
+        {step === 0 && (
           <div className="flex items-center justify-center">
             <button
-              className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline w-full"
+              className="border border-gray-300 hover:cursor-pointer font-stretch-expanded text-white py-3 px-6 rounded-full w-full transition-transform duration-200 hover:scale-105"
               type="button"
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="flex items-center justify-center">
+            <button
+              className="border border-gray-300 hover:cursor-pointer font-stretch-expanded text-white py-3 px-6 rounded-full transition-transform duration-200 hover:scale-105 w-full"
               onClick={handleSignUp}
             >
               Sign Up
             </button>
           </div>
-        </form>
-      </div>
+        )}
+      </form>
     </div>
-  );
-}
-
+  </div>
+</div>
+)}
 export default SignUp;
+
+
+
